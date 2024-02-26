@@ -28,7 +28,7 @@ const Book = ({ book }: any) => {
         <a className="cursor-pointer shadow-2xl duration-300 hover:translate-y-1 hover:shadow-none">
           <Image
             priority
-            src={book.thumbnail}
+            src={book.thumbnail.url}
             alt={book.title}
             width={450}
             height={350}
