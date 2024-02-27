@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { BookType } from "../types/types";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -13,10 +12,10 @@ type BookProps = {
 
 // eslint-disable-next-line react/display-name
 const Book = ({ book }: BookProps) => {
+  // const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const { data: session } = useSession();
   const user = session?.user;
-  const router = useRouter();
 
   const handlePurchaseClick = () => {
     setShowModal(true);
@@ -25,7 +24,7 @@ const Book = ({ book }: BookProps) => {
   const handlePurchaseConfirm = () => {
     if (!user) {
       setShowModal(false); // モーダルを閉じる
-      router.push("/login");
+      // router.push("/login");
     } else {
       // Stripeで決済する
     }
