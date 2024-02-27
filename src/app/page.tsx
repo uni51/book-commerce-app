@@ -2,6 +2,7 @@
 
 import Book from "./components/Book";
 import { getAllbooks } from "./lib/microcms/client";
+import { BookType } from "./types/types";
 
 // 疑似データ
 // const books = [
@@ -56,7 +57,7 @@ import { getAllbooks } from "./lib/microcms/client";
 // eslint-disable-next-line @next/next/no-async-client-component
 export default async function Home() {
   const { contents } = await getAllbooks();
-  console.log(contents);
+  // console.log(contents);
 
   return (
     <>
@@ -64,7 +65,7 @@ export default async function Home() {
         <h2 className="text-center w-full font-bold text-3xl mb-2">
           Book Commerce
         </h2>
-        {contents.map((book) => (
+        {contents.map((book: BookType) => (
           <Book key={book.id} book={book} />
         ))}
       </main>
