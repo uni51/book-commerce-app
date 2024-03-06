@@ -11,14 +11,26 @@ export async function POST(request: Request, response: Response) {
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    const purchase = await prisma.purchase.create({
-      data: {
+    const existingPurchase = await prisma.purchase.findFirst({
+      where: {
         userId: session.client_reference_id!,
         bookId: session.metadata?.bookId!,
       },
     });
 
-    return NextResponse.json({ purchase });
+    // 既に購入履歴が存在する場合は、新たに作成しない
+    if (!existingPurchase) {
+      const purchase = await prisma.purchase.create({
+        data: {
+          userId: session.client_reference_id!,
+          bookId: session.metadata?.bookId!,
+        },
+      });
+      return NextResponse.json({ purchase });
+    } else {
+      // 既に購入履歴が存在する場合の処理
+      return NextResponse.json({ message: "既に購入済みです。" });
+    }
   } catch (err: any) {
     return NextResponse.json({ message: err.message });
   }
