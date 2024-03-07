@@ -18,6 +18,8 @@ export async function POST(request: Request, response: Response) {
       },
     });
 
+    console.log(session);
+
     // 既に購入履歴が存在する場合は、新たに作成しない
     if (!existingPurchase) {
       const purchase = await prisma.purchase.create({
