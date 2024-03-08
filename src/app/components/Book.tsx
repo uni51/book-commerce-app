@@ -8,13 +8,13 @@ import { useSession } from "next-auth/react";
 
 type BookProps = {
   book: BookType;
-  user: any;
-  isPurchased: boolean;
 };
 
 // eslint-disable-next-line react/display-name
-const Book = memo(({ book, user, isPurchased }: BookProps) => {
+const Book = memo(({ book }: BookProps) => {
   const [showModal, setShowModal] = useState(false);
+  const { data: session } = useSession();
+  const user: any = session?.user;
   const router = useRouter();
 
   //stripe checkout
@@ -26,10 +26,10 @@ const Book = memo(({ book, user, isPurchased }: BookProps) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            bookId,
             title: book.title,
             price: book.price,
             userId: user?.id,
+            bookId: book.id,
           }),
         }
       );
@@ -51,13 +51,13 @@ const Book = memo(({ book, user, isPurchased }: BookProps) => {
   };
 
   const handlePurchaseClick = () => {
-    if (!isPurchased) {
-      setShowModal(true);
-    } else {
-      // ここで既に購入済みであることをユーザーに通知する処理を追加できます。
-      // 例: アラートを表示する、またはUI上でメッセージを表示する。
-      alert("その商品は購入済みです。");
-    }
+    // if (!isPurchased) {
+    setShowModal(true);
+    // } else {
+    //   // ここで既に購入済みであることをユーザーに通知する処理を追加できます。
+    //   // 例: アラートを表示する、またはUI上でメッセージを表示する。
+    //   alert("その商品は購入済みです。");
+    // }
   };
 
   const handlePurchaseConfirm = () => {
